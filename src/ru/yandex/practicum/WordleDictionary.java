@@ -1,6 +1,9 @@
 package ru.yandex.practicum;
 
-import java.util.List;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.io.SequenceInputStream;
+import java.util.*;
 
 /*
 этот класс содержит в себе список слов List<String>
@@ -8,7 +11,80 @@ import java.util.List;
     также этот класс может содержать рутинные функции по сравнению слов, букв и т.д.
  */
 public class WordleDictionary {
-
     private List<String> words;
 
+    public List<String> getWordsSort() {
+        return wordsSort;
+    }
+
+    private PrintWriter log;
+
+    public void setLog(PrintWriter log) {
+        this.log = log;
+    }
+
+    private List<String> wordsSort = new ArrayList<>();
+
+    public  WordleDictionary() {
+        WordleDictionaryLoader wordleDictionaryLoader = new WordleDictionaryLoader();
+        try {
+            words = wordleDictionaryLoader.uploadingWords();
+        } catch (IOException ex) {
+            log.println("Ошибка чтения файла: " + ex.getMessage());
+            log.close();
+        }
+        Iterator<String> iterator = words.iterator();
+        while (iterator.hasNext()) {
+            String word = iterator.next();
+            if (word.length() != 5) {
+                iterator.remove();
+            } else {
+                wordsSort.add(word.toLowerCase().replace("ё", "е"));
+            }
+        }
+    }
+
+    public void wordСomparison(String enterWord, String checkWord) {
+        if (enterWord.length() != checkWord.length()) {
+            System.out.println("Слова должны быть одной длинны");
+            return;
+        }
+        for (int i = 0; i < enterWord.length(); i++) {
+
+            char enterWordChar = enterWord.charAt(i);
+            char checkWordChar = checkWord.charAt(i);
+
+            if (enterWordChar == checkWordChar) {
+                System.out.print("+");
+            } else if (checkWord.indexOf(enterWordChar) != -1 && checkWord.indexOf(enterWordChar) != i) {
+                System.out.print("^");
+            } else {
+                System.out.print("-");
+            }
+        }
+    }
+
+    public int numberOfMatches(String enterWord, String checkWord) {
+        int matches = 0;
+        Set<Integer> matchePos = new HashSet<>();
+        for (int i = 0; i < enterWord.length(); i++) {
+            char enterWordChar = enterWord.charAt(i);
+            for (int j = 0; j < checkWord.length(); j++)
+                if (!matchePos.contains(j) && enterWordChar == checkWord.charAt(j)) {
+                    matches++;
+                    matchePos.add(j);
+                }
+        }
+        return matches;
+    }
+
+    public boolean availableWords(String word) {
+        boolean checkWords = false;
+        for (String s : getWordsSort()) {
+            if (word.equals(s)) {
+                return checkWords = true;
+            }
+        }
+        return checkWords;
+    }
 }
