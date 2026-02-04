@@ -13,6 +13,10 @@ import java.util.*;
 public class WordleDictionary {
     private List<String> words;
 
+    public void setWordsSort(List<String> wordsSort) {
+        this.wordsSort = wordsSort;
+    }
+
     public List<String> getWordsSort() {
         return wordsSort;
     }

@@ -17,26 +17,28 @@ WordleDictionary
  */
 
 public class WordleGame {
+    public void setSteps(int steps) {
+        this.steps = steps;
+    }
 
-    private String answer;
+    private String answer = "";
 
     private int steps;
 
     private WordleDictionary dictionary = new WordleDictionary();
     Scanner scanner = new Scanner(System.in);
     String randomWord;
-    LinkedHashMap<String, Integer> hintMap = new LinkedHashMap<>();
+   private LinkedHashMap<String, Integer> hintMap = new LinkedHashMap<>();
+    boolean finish = false;
 
 
     public void starGame() {
         steps = 0;
-        boolean finish = false;
-
         randomWord = getRandomWord(dictionary.getWordsSort());
 
         System.out.println("Добро пожаловать в игру, вам нужно угадать слово из 5 букв, за 5 попыток, удачи");
 
-        while (!randomWord.equals(answer)) {
+        while (!finish) {
 
             System.out.println(randomWord);
 
@@ -44,34 +46,7 @@ public class WordleGame {
 
             answer = scanner.nextLine();
 
-            if (answer.isEmpty()) {
-                String empty = gameHint(dictionary.getWordsSort(), hintMap, randomWord);
-                if (empty != null) {
-                    System.out.println(empty);
-                } else {
-                    System.out.println("Не нашел для вас подсказку");
-                }
-            } else if (answer.length() != 5) {
-                System.out.println("Введите слово из 5 букв, пожалуйста");
-            } else if (!dictionary.availableWords(answer)) {
-                System.out.println("Такого слова нету в списке загаданных слов, повторите попытку");
-            } else if (dictionary.availableWords(answer)) {
-                dictionary.wordСomparison(answer, randomWord);
-                hintMap.put(answer, dictionary.numberOfMatches(answer, randomWord));
-                steps++;
-            }
-            if (answer.equals(randomWord)) {
-                System.out.println("\n" + "Поздравляем, вы правильно угадали слово!!");
-                break;
-            } else if (steps >= 5) {
-                System.out.println("\n" + "К сожалению ваши попытки закончились, попробуйте в другой  раз");
-                System.out.println("Загадонное слово, было: " + randomWord);
-                break;
-            } else {
-                System.out.println("\n" + "Пока что вы не угадали слово, у вас осталось попыток: " + (5 - steps));
-                System.out.println("Попробуйте, использовать подсказку, для этого нажмите enter");
-            }
-
+            System.out.println(checkingTheWord(answer, randomWord));
         }
     }
 
@@ -132,4 +107,83 @@ public class WordleGame {
     public WordleDictionary getDictionary() {
         return dictionary;
     }
+
+    public boolean checkFinish(String check) {
+        if (answer.equals(randomWord)) {
+            return finish = true;
+        }
+        return finish;
+    }
+
+/*
+    public void checkingTheWord(String word) {
+        if (word.isEmpty()) {
+            String empty = gameHint(dictionary.getWordsSort(), hintMap, randomWord);
+            if (empty != null) {
+                System.out.println(empty);
+            } else {
+                System.out.println("Не нашел для вас подсказку");
+            }
+        } else if (word.length() != 5) {
+            System.out.println("Введите слово из 5 букв, пожалуйста");
+        } else if (!dictionary.availableWords(word)) {
+            System.out.println("Такого слова нету в списке загаданных слов, повторите попытку");
+        } else if (dictionary.availableWords(word)) {
+            String print = dictionary.wordСomparison(word, randomWord);
+            System.out.println(print);
+            hintMap.put(word, dictionary.numberOfMatches(word, randomWord));
+            steps++;
+        }
+        if (word.equals(randomWord)) {
+            checkFinish(word);
+        } else if (steps >= 5) {
+            GameOver();
+        } else {
+            System.out.println("Пока что вы не угадали слово, у вас осталось попыток: " + (5 - steps));
+            System.out.println("Попробуйте, использовать подсказку, для этого нажмите enter");
+        }
+
+    }*/
+
+
+    public String checkingTheWord(String word, String randomWord) {
+        if (word.isEmpty()) {
+            String empty = gameHint(dictionary.getWordsSort(), hintMap, randomWord);
+            if (empty != null) {
+                return empty;
+            } else {
+                return "Не нашел для вас подсказку";
+            }
+        } else if (word.length() != 5) {
+            return "Введите слово из 5 букв, пожалуйста";
+        } else if (!dictionary.availableWords(word)) {
+            return "Такого слова нету в списке загаданных слов, повторите попытку";
+        } else if (dictionary.availableWords(word)) {
+            String print = dictionary.wordСomparison(word, randomWord);
+            System.out.println(print);
+            hintMap.put(word, dictionary.numberOfMatches(word, randomWord));
+            steps++;
+            if (steps >= 5) {
+                GameOver();
+                return "К сожалению ваши попытки закончились, попробуйте в другой раз";
+            } else if (word.equals(randomWord)) {
+                checkFinish(word);
+                return "Поздравляю, вы правильно угадали слово!!";
+            } else {
+                return "Пока что вы не угадали слово, у вас осталось попыток: " + (5 - steps) + "\n" +
+                        "Попробуйте, использовать подсказку, для этого нажмите enter";
+            }
+        }else {
+            return "Пока что вы не угадали слово, у вас осталось попыток: " + (5 - steps) + "\n" +
+                    "Попробуйте, использовать подсказку, для этого нажмите enter";
+        }
+
+    }
+
+
+    public boolean GameOver() {
+        System.out.println("Загадонное слово, было: " + randomWord);
+        return finish = true;
+    }
+
 }

@@ -87,33 +87,33 @@ class WordleTest {
     }
 
     @Test
-    void CheckingThatTheMethodWillShowThatThereIsOnlyOneMatchInTheWords(){
+    void checkingThatTheMethodWillShowThatThereIsOnlyOneMatchInTheWords(){
        int result =  wordleDictionary.numberOfMatches("прив" , "пока");
        assertEquals(1, result);
        //Проверка что метод покажет что только одно совпадение есть в словах
     }
 
     @Test
-    void CheckingThatTheMethodWillShowThatThereIsOnlyNullMatchInTheWords(){
+    void checkingThatTheMethodWillShowThatThereIsOnlyNullMatchInTheWords(){
         int result =  wordleDictionary.numberOfMatches("fff" , "bbb");
         assertEquals(0, result);
         //Проверка что метод покажет что только одно совпадение есть в словах
     }
 
     @Test
-    void TheWordIsInTheList(){
+    void theWordIsInTheList(){
        assertTrue(wordleDictionary.availableWords("парок"));
        //Проверка что слово есть в списке
     }
 
     @Test
-    void ThisWordIsNotIncludedInTheList(){
+    void thisWordIsNotIncludedInTheList(){
         assertFalse(wordleDictionary.availableWords("нетус"));
         //Проверка что слово есть в списке
     }
 
     @Test
-    void TheListWillGiveNullBecauseTheListOfAnswersIsEmpty (){
+    void theListWillGiveNullBecauseTheListOfAnswersIsEmpty (){
         List<String> listOFfWords = new ArrayList<>();
         listOFfWords.add("cлово");
         LinkedHashMap<String, Integer> emptyResponseCounter = new LinkedHashMap<>();
@@ -122,7 +122,7 @@ class WordleTest {
     }
 
     @Test
-    void TheGameHintWillGiveYouAааа (){
+    void theGameHintWillGiveYouAааа (){
         List<String> listOFfWords = new ArrayList<>();
         listOFfWords.add("ааааб");
         listOFfWords.add("аааав");
@@ -133,12 +133,46 @@ class WordleTest {
         //Подсказка сработает
     }
 
+    @Test
+    void thePromptWillNotWorkAndWillWrite (){
+        List<String> listOFfWords = new ArrayList<>();
+        listOFfWords.add("ааааб");
+        LinkedHashMap<String, Integer> ResponseCounter = new LinkedHashMap<>();
+        ResponseCounter.put("ааааб", 4);
+        String result = wordleGame.gameHint(listOFfWords, ResponseCounter, "ааааа");
+        assertNull(result);
+        //Подсказка не сработает и напишет что "Не смогли найти подсказку
+    }
+
 
     @Test
-    void testStartGame(){
-        wordleGame.processAnswer("парок");
-        wordleGame.starGame();
-        wordleGame.processAnswer("парок");
+    void theWordWillNotPassVerification(){
+       String check = wordleGame.checkingTheWord("мало" , "много");
+       assertEquals("Введите слово из 5 букв, пожалуйста", check);
+        //Это слово не будет принято и будет просить 5 букв
     }
+
+    @Test
+    void itWillIndicateThatThereIsNoSuchWordInTheList(){
+        String check = wordleGame.checkingTheWord("fffff", "brrrr");
+        assertEquals("Такого слова нету в списке загаданных слов, повторите попытку",check );
+        // Выдаст что Такого слова нету в списке
+    }
+
+    @Test
+    void gameWinner(){
+        String check = wordleGame.checkingTheWord("парок" , "парок");
+        assertEquals("Поздравляю, вы правильно угадали слово!!",check );
+        //Выдаст что слово угадали
+    }
+
+    @Test
+    void gameOver(){
+        wordleGame.setSteps(5);
+        String check = wordleGame.checkingTheWord("слово" , "друго");
+        assertEquals("К сожалению ваши попытки закончились, попробуйте в другой раз",check );
+        wordleGame.setSteps(0);
+    }
+
 
 }

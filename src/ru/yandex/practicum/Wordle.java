@@ -1,4 +1,5 @@
 package ru.yandex.practicum;
+
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -18,16 +19,15 @@ public class Wordle {
         String logFilePath = "logs/app.log";
         PrintWriter logFile = new PrintWriter(logFilePath);
 
-
         WordleDictionaryLoader wordleDictionaryLoader = new WordleDictionaryLoader();
         wordleDictionaryLoader.setLog(logFile);
+
         WordleDictionary wordleDictionary = new WordleDictionary();
         wordleDictionary.setLog(logFile);
+
         WordleGame wordleGame = new WordleGame();
 
-
         wordleGame.starGame();
-
 
 
     }
