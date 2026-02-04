@@ -2,7 +2,6 @@ package ru.yandex.practicum;
 
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.io.SequenceInputStream;
 import java.util.*;
 
 /*
@@ -71,7 +70,7 @@ public class WordleDictionary {
     }
 
     public int numberOfMatches(String enterWord, String checkWord) {
-        if (enterWord == null || checkWord == null){
+        if (enterWord == null || checkWord == null) {
             return 0;
         }
         int matches = 0;
