@@ -28,7 +28,7 @@ public class WordleGame {
     private WordleDictionary dictionary = new WordleDictionary();
     Scanner scanner = new Scanner(System.in);
     String randomWord;
-   private LinkedHashMap<String, Integer> hintMap = new LinkedHashMap<>();
+    private LinkedHashMap<String, Integer> hintMap = new LinkedHashMap<>();
     boolean finish = false;
 
 
@@ -164,7 +164,7 @@ public class WordleGame {
             hintMap.put(word, dictionary.numberOfMatches(word, randomWord));
             steps++;
             if (steps >= 5) {
-                GameOver();
+                gameOver();
                 return "К сожалению ваши попытки закончились, попробуйте в другой раз";
             } else if (word.equals(randomWord)) {
                 checkFinish(word);
@@ -173,7 +173,7 @@ public class WordleGame {
                 return "Пока что вы не угадали слово, у вас осталось попыток: " + (5 - steps) + "\n" +
                         "Попробуйте, использовать подсказку, для этого нажмите enter";
             }
-        }else {
+        } else {
             return "Пока что вы не угадали слово, у вас осталось попыток: " + (5 - steps) + "\n" +
                     "Попробуйте, использовать подсказку, для этого нажмите enter";
         }
@@ -181,7 +181,7 @@ public class WordleGame {
     }
 
 
-    public boolean GameOver() {
+    public boolean gameOver() {
         System.out.println("Загадонное слово, было: " + randomWord);
         return finish = true;
     }
