@@ -25,7 +25,7 @@ public class WordleDictionary {
 
     private List<String> wordsSort = new ArrayList<>();
 
-    public  WordleDictionary() {
+    public WordleDictionary() {
         WordleDictionaryLoader wordleDictionaryLoader = new WordleDictionaryLoader();
         try {
             words = wordleDictionaryLoader.uploadingWords();
@@ -44,27 +44,32 @@ public class WordleDictionary {
         }
     }
 
-    public void wordСomparison(String enterWord, String checkWord) {
+    public String wordСomparison(String enterWord, String checkWord) {
         if (enterWord.length() != checkWord.length()) {
             System.out.println("Слова должны быть одной длинны");
-            return;
+            return "";
         }
+        StringBuilder result = new StringBuilder();
         for (int i = 0; i < enterWord.length(); i++) {
 
             char enterWordChar = enterWord.charAt(i);
             char checkWordChar = checkWord.charAt(i);
 
             if (enterWordChar == checkWordChar) {
-                System.out.print("+");
+                result.append("+");
             } else if (checkWord.indexOf(enterWordChar) != -1 && checkWord.indexOf(enterWordChar) != i) {
-                System.out.print("^");
+                result.append("^");
             } else {
-                System.out.print("-");
+                result.append("-");
             }
         }
+        return result.toString();
     }
 
     public int numberOfMatches(String enterWord, String checkWord) {
+        if (enterWord == null || checkWord == null){
+            return 0;
+        }
         int matches = 0;
         Set<Integer> matchePos = new HashSet<>();
         for (int i = 0; i < enterWord.length(); i++) {

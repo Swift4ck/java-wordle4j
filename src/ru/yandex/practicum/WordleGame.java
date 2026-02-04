@@ -13,6 +13,7 @@ import java.util.*;
     предложат слово-подсказку с учётом всего, что вводил пользователь ранее
 
 не забудьте про специальные типы исключений для игровых и неигровых ошибок
+WordleDictionary
  */
 
 public class WordleGame {
@@ -31,11 +32,7 @@ public class WordleGame {
         steps = 0;
         boolean finish = false;
 
-
-        Collections.shuffle(dictionary.getWordsSort());
-
-        Random random = new Random();
-        String randomWord = dictionary.getWordsSort().get(random.nextInt(dictionary.getWordsSort().size()));
+        randomWord = getRandomWord(dictionary.getWordsSort());
 
         System.out.println("Добро пожаловать в игру, вам нужно угадать слово из 5 букв, за 5 попыток, удачи");
 
@@ -76,13 +73,10 @@ public class WordleGame {
             }
 
         }
-
-
     }
 
     public String gameHint(List<String> list, LinkedHashMap<String, Integer> hintMap, String rightAnswer) {
         int maxCount = 0;
-
         for (Map.Entry<String, Integer> entry : hintMap.entrySet()) {
             String key = entry.getKey();
             Integer value = entry.getValue();
@@ -99,7 +93,7 @@ public class WordleGame {
         List<String> appropriateWords = new ArrayList<>();
         for (String word : list) {
             int considens = dictionary.numberOfMatches(word, rightAnswer);
-            if (considens >= maxCount && word.length() >= 5 && !hintMap.containsKey(word)){
+            if (considens >= maxCount && word.length() >= 5 && !hintMap.containsKey(word)) {
                 appropriateWords.add(word);
             }
         }
@@ -117,4 +111,25 @@ public class WordleGame {
         }
     }
 
+
+    public String getRandomWord(List<String> words) {
+        Collections.shuffle(words); // Перемешиваем переданный список
+
+        Random randomWords = new Random();
+        String randomWord = words.get(randomWords.nextInt(words.size()));
+        return randomWord;
+    }
+
+
+    public void processAnswer(String userInput) {
+        answer = userInput;
+    }
+
+    public int getSteps() {
+        return steps;
+    }
+
+    public WordleDictionary getDictionary() {
+        return dictionary;
+    }
 }
