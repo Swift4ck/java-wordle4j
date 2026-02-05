@@ -28,8 +28,9 @@ public class WordleDictionaryLoader {
             while (reader.ready()) {
                 readerList.add(reader.readLine());
             }
-        } catch (IOException ex) {
-            log.println("Ошибка чтения файла: " + ex.getMessage());
+        } catch (IOException e) {
+            log.println("Ошибка чтения файла");
+            throw e;
         }
         return readerList;
     }
