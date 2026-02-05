@@ -40,7 +40,6 @@ public class WordleGame {
 
         while (!finish) {
 
-            System.out.println(randomWord);
 
             System.out.println("Введите ваш ответ:");
 
